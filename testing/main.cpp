@@ -1,4 +1,4 @@
-//  FCAI – OOP Programming – 2023 - Assignment 1
+//  FCAI: OOP Programming, 2023, Assignment 1
 //  Program Name:				CS213-2023-20220740-20220709-20220954-A1-Part1.cpp
 //  Last Modification Date:	09/10/2023
 //  Author 1, ID and Group:     Ahmed Emad, 20220740, A
@@ -19,7 +19,7 @@ unsigned char imgGS[SIZE][SIZE];
 unsigned char imgGS2[SIZE][SIZE];
 unsigned char imgGS3[SIZE][SIZE];
 unsigned char imgRGB[SIZE][SIZE][RGB];
-
+unsigned char quarter[(SIZE/2)*(SIZE/2)] = {};
 // all filter functions:
 void bandw(){
     for (int i = 0; i < SIZE; i++) {
@@ -293,6 +293,78 @@ void blur(){
     showGSBMP(imgGS3);
 }
 
+
+void GetQuarter(unsigned char * & ptr, int quarter){
+    if (quarter < 1 or quarter > 4)
+        cout << "ERROR QUARTER";
+    int start_r = 0 , end_r =SIZE/2 ;
+    int start_c = 0 ,end_c = SIZE/2;
+    if (quarter == 2) {
+        start_c = SIZE/2 , end_c=SIZE;
+        }
+    else if (quarter == 3) {
+        start_r = SIZE / 2 , end_r= SIZE;
+    }
+    else if (quarter == 4) {
+        start_r = SIZE / 2;
+        start_c = SIZE / 2;
+        end_r = SIZE;
+        end_c = SIZE;
+    }
+    int k = 0;
+    for (int i = start_r; i < end_r; i++) {
+        for (int j = start_c; j < end_c; j++) {
+            ptr[k++] = image[i][j];
+        }
+    }
+}
+
+void GetQuarter(unsigned char * & ptr, int quarter){
+    if (quarter < 1 or quarter > 4)
+        cout << "ERROR QUARTER";
+    int start_r = 0 , end_r =SIZE/2 ;
+    int start_c = 0 ,end_c = SIZE/2;
+    if (quarter == 2) {
+        start_c = SIZE/2 , end_c=SIZE;
+    }
+    else if (quarter == 3) {
+        start_r = SIZE / 2 , end_r= SIZE;
+    }
+    else if (quarter == 4) {
+        start_r = SIZE / 2;
+        start_c = SIZE / 2;
+        end_r = SIZE;
+        end_c = SIZE;
+    }
+    int k = 0;
+    for (int i = start_r; i < end_r; i++) {
+        for (int j = start_c; j < end_c; j++) {
+            ptr[k++] = image[i][j];
+        }
+    }
+}
+
+void enlargeFilter() {
+    int userquad;
+    unsigned char * pQuad = quarter;
+    cout << "choose a quarter 1, 2, 3 or 4?";
+    cin >> userquad;
+
+    GetQuarter(pQuad, userquad);
+    int k = 0;
+    for (int i = 0; i < SIZE; i+=2) {
+        for (int j = 0; j < SIZE; j+=2) {
+            imgGS[i][j] = pQuad[k];
+            imgGS[i][j+1] = pQuad[k];
+            imgGS[i+1][j] = pQuad[k];
+            imgGS[i+1][j+1] = pQuad[k];
+            k++;
+
+        }
+    }
+}
+
+
 void shrink() {
     int factor;
     int nsize = SIZE / factor;
@@ -429,6 +501,9 @@ int main() {
         }
     } else if (filter == "7"){
         edge();
+        else if (filter == "8"){
+        enlargeFilter();
+    }
     } else if (filter == "9"){
         shrink();
     } else if (filter == "a"){
