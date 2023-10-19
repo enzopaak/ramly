@@ -293,32 +293,6 @@ void blur(){
     showGSBMP(imgGS3);
 }
 
-
-void GetQuarter(unsigned char * & ptr, int quarter){
-    if (quarter < 1 or quarter > 4)
-        cout << "ERROR QUARTER";
-    int start_r = 0 , end_r =SIZE/2 ;
-    int start_c = 0 ,end_c = SIZE/2;
-    if (quarter == 2) {
-        start_c = SIZE/2 , end_c=SIZE;
-        }
-    else if (quarter == 3) {
-        start_r = SIZE / 2 , end_r= SIZE;
-    }
-    else if (quarter == 4) {
-        start_r = SIZE / 2;
-        start_c = SIZE / 2;
-        end_r = SIZE;
-        end_c = SIZE;
-    }
-    int k = 0;
-    for (int i = start_r; i < end_r; i++) {
-        for (int j = start_c; j < end_c; j++) {
-            ptr[k++] = image[i][j];
-        }
-    }
-}
-
 void GetQuarter(unsigned char * & ptr, int quarter){
     if (quarter < 1 or quarter > 4)
         cout << "ERROR QUARTER";
@@ -339,7 +313,7 @@ void GetQuarter(unsigned char * & ptr, int quarter){
     int k = 0;
     for (int i = start_r; i < end_r; i++) {
         for (int j = start_c; j < end_c; j++) {
-            ptr[k++] = image[i][j];
+            ptr[k++] = imgGS[i][j];
         }
     }
 }
@@ -362,6 +336,7 @@ void enlargeFilter() {
 
         }
     }
+    showGSBMP(imgGS);
 }
 
 
@@ -446,13 +421,13 @@ void skew() {
                 }
             }
         }
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                imgGS[i][j] = imgGS3[i][j];
-            }
-        }
-        showGSBMP(imgGS);
     }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            imgGS[i][j] = imgGS3[i][j];
+        }
+    }
+    showGSBMP(imgGS);
 }
 
 
@@ -471,8 +446,10 @@ int main() {
             "\n5. Rotate Image"
             "\n6. Lighten & Darken"
             "\n7. Edge Detection"
+            "\n8. Enlarge Image"
             "\n9. Shrink Image"
             "\na. Mirror Image"
+            "\nb. Shuffle Image"
             "\nc. Blur Image"
             "\nd. Crop image"
             "\ne. Skew Image"
@@ -499,11 +476,10 @@ int main() {
         } else {
             weweDarken();
         }
-    } else if (filter == "7"){
+    } else if (filter == "7") {
         edge();
-        else if (filter == "8"){
-        enlargeFilter();
-    }
+    } else if (filter == "8"){
+            enlargeFilter();
     } else if (filter == "9"){
         shrink();
     } else if (filter == "a"){
